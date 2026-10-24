@@ -1,39 +1,60 @@
 #include "Application.h"
-
 #include "Body.h"
 
 Application::Application()
     : mode({3550, 2440})
     , window(mode, "hello world")
-{}
+{
+    const Body box({2500, 1440}, {500, 500}, 50);
+    bodies.push_back(box);
+}
 
 void Application::run()
 {
-    const Body box({2500, 1440}, {100, 100}, 50);
-
     while (window.isOpen()) {
         tick();
+        processEvents();
+        update();
+        render();
+    }
+}
 
-        while (const optional<Event> event = window.pollEvent()) {
-            if (event->is<Event::Closed>()) {
+void Application::processEvents()
+{
+    while (const optional<Event> event = window.pollEvent()) {
+        if (event->is<Event::Closed>()) {
+            window.close();
+        }
+        if (const auto *key = event->getIf<Event::KeyPressed>()) {
+            if (key->code == Keyboard::Key::Escape) {
                 window.close();
             }
-            if (const auto *key = event->getIf<Event::KeyPressed>()) {
-                if (key->code == Keyboard::Key::Escape) {
-                    window.close();
-                }
-            }
         }
-
-        window.clear(Color(50, 50, 50));
-        window.draw(box);
-        window.display();
     }
+}
+
+void Application::update()
+{
+    for (auto &box : bodies) {
+        box.integrate(dt);
+    }
+}
+
+void Application::render()
+{
+    window.clear(Color(50, 50, 50));
+    for (const auto &box : bodies) {
+        window.draw(box);
+    }
+    window.display();
+
 }
 
 void Application::tick()
 {
-    if (dt > 0.1)
-        dt = 0.1;
+    // NOTE: lag protection.
+    if (dt > 0.1f) {
+        return;
+    }
     dt = clock.restart().asSeconds();
 }
