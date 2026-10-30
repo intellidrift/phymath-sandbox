@@ -9,19 +9,22 @@
 using namespace std;
 using namespace sf;
 
-class Application
+class Application final
 {
 private:
     VideoMode mode;
     RenderWindow window;
     Clock clock;
 
-    vector<Body> bodies;
+    int screenWidth;
+    int screenHeight;
+    vector<Body> bodies; // temp
     float dt = 0.f;
 
     void processEvents();
     void update();
     void render();
+    void resolveBounds(Body &body);
 
 public:
     Application();

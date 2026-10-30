@@ -1,12 +1,15 @@
 #include "Application.h"
 #include "Body.h"
+#include <iostream>
 
 Application::Application()
     : mode({3550, 2440})
-    , window(mode, "hello world")
+    , window(mode, "Phymath-sandbox")
+    , screenWidth(mode.size.x)
+    , screenHeight(mode.size.y)
 {
-    const Body box({2500, 1440}, {500, 500}, 50);
-    bodies.push_back(box);
+    const Body box({2500, 1440}, {500, 300}, 50); // temp to some
+    bodies.push_back(box);                        // temp to some
 }
 
 void Application::run()
@@ -14,8 +17,8 @@ void Application::run()
     while (window.isOpen()) {
         tick();
         processEvents();
-        update();
-        render();
+        update(); // temp to sim
+        render(); // temp to sim
     }
 }
 
@@ -36,7 +39,8 @@ void Application::processEvents()
 void Application::update()
 {
     for (auto &box : bodies) {
-        box.integrate(dt);
+        box.update(dt);
+        resolveBounds(box);
     }
 }
 
@@ -47,14 +51,17 @@ void Application::render()
         window.draw(box);
     }
     window.display();
-
 }
 
 void Application::tick()
 {
-    // NOTE: lag protection.
     if (dt > 0.1f) {
         return;
     }
     dt = clock.restart().asSeconds();
+}
+
+void Application::resolveBounds(Body &body)
+{
+    // Needs of convenient api for body magnitudes..
 }
