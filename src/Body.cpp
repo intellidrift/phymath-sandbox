@@ -8,11 +8,13 @@ Body::Body(const Vector2f &position, const Vector2f &velocity, const float mass)
     , vel(velocity)
     , acc({0, 0})
     , mass(mass)
-    , invMass(1.0f / mass) // TODO: fix me
+    , invMass(1.0f / mass)
 {
-    box.setPosition(position);
-    box.setSize({100, 100});
-    box.setFillColor(Color(0x886176));
+    invMass = mass > 0.f ? 1.f / mass : 0.f;
+
+    boxShape.setPosition(position);
+    boxShape.setSize({100, 100});
+    boxShape.setFillColor(Color(0x886176));
 }
 
 void Body::integrate(const float dt)
@@ -25,7 +27,7 @@ void Body::integrate(const float dt)
 void Body::update(const float dt)
 {
     integrate(dt);
-    box.setPosition(pos);
+    boxShape.setPosition(pos);
 }
 
 void Body::applyForce(const Vector2f &force)
@@ -38,10 +40,10 @@ void Body::applyForce(const Vector2f &force)
 
 void Body::draw(RenderWindow &window) const
 {
-    window.draw(box);
+    window.draw(boxShape);
 }
 
 void Body::draw(RenderTarget &target, const RenderStates states) const
 {
-    target.draw(box, states);
+    target.draw(boxShape, states);
 }

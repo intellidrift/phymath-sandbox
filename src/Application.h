@@ -7,7 +7,6 @@
 #include <SFML/Window.hpp>
 
 using namespace std;
-using namespace sf;
 
 class Application final
 {
@@ -24,13 +23,14 @@ private:
     void processEvents();
     void update();
     void render();
-    void resolveBounds(Body &body);
-
+    void resolveScreenBounce(Body &body);
 public:
     Application();
     ~Application() = default;
     void run();
     void tick();
 };
+
+using namespace sf;
 
 #endif //PHYMATH_SANDBOX_APPLICATION_H

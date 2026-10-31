@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <ranges>
 
 using namespace sf;
 using namespace std;
@@ -15,20 +16,26 @@ private:
     Vector2f pos;
     Vector2f vel;
     Vector2f acc;
-
     float mass;
     float invMass;
 
-    RectangleShape box; // temporary
-
-    void resetAcceleration() { acc = VEC2_ZERO; };
+    RectangleShape boxShape; // temporary
 
 public:
     Body(const Vector2f &position, const Vector2f &velocity, float mass);
+    void resetAcceleration() { acc = VEC2_ZERO; }
+
     void integrate(float dt);
     void update(float dt);
     void applyForce(const Vector2f &force);
     void draw(RenderWindow &window) const;
+
+    Vector2f position() { return pos; }
+    void setPosition(const Vector2f &value) { this->pos = value; }
+    Vector2f velocity() { return vel; }
+    void setVelocity(const Vector2f &value) { this->vel = value; }
+    RectangleShape box() { return boxShape; }
+    void setBox(const RectangleShape &value) { this->boxShape = value; }
 
 protected:
     void draw(RenderTarget &target, RenderStates states) const override;

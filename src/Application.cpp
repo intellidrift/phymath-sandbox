@@ -8,8 +8,8 @@ Application::Application()
     , screenWidth(mode.size.x)
     , screenHeight(mode.size.y)
 {
-    const Body box({2500, 1440}, {500, 300}, 50); // temp to some
-    bodies.push_back(box);                        // temp to some
+    const Body box({2500, 1440}, {1000, 300}, 50); // temp to some
+    bodies.push_back(box);                         // temp to some
 }
 
 void Application::run()
@@ -40,7 +40,7 @@ void Application::update()
 {
     for (auto &box : bodies) {
         box.update(dt);
-        resolveBounds(box);
+        resolveScreenBounce(box);
     }
 }
 
@@ -55,13 +55,30 @@ void Application::render()
 
 void Application::tick()
 {
-    if (dt > 0.1f) {
-        return;
-    }
     dt = clock.restart().asSeconds();
+    if (dt > 0.1f) {
+        dt = 0.1f;
+    }
 }
 
-void Application::resolveBounds(Body &body)
+void Application::resolveScreenBounce(Body &body)
 {
-    // Needs of convenient api for body magnitudes..
+    constexpr float correction = 5;
+
+    if (body.position().y > screenHeight - body.box().getSize().y) {
+        body.setVelocity(Vector2f(body.velocity().x, -body.velocity().y));
+        body.setPosition({body.position().x, body.position().y - correction});
+
+    } else if (body.position().x > screenWidth - body.box().getSize().x) {
+        body.setVelocity(Vector2f(-body.velocity().x, body.velocity().y));
+        body.setPosition({body.position().x - correction, body.position().y});
+
+    } else if (body.position().y < 0) {
+        body.setVelocity(Vector2f(body.velocity().x, -body.velocity().y));
+        body.setPosition({body.position().x, body.position().y + correction});
+
+    } else if (body.position().x < 0) {
+        body.setVelocity(Vector2f(-body.velocity().x, body.velocity().y));
+        body.setPosition({body.position().x + correction, body.position().y});
+    }
 }
