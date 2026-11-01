@@ -2,6 +2,7 @@
 #define PHYMATH_SANDBOX_APPLICATION_H
 
 #include "Body.h"
+#include "World.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Window.hpp>
@@ -17,13 +18,13 @@ private:
 
     int screenWidth;
     int screenHeight;
-    vector<Body> bodies; // temp
+    World world; // temp
     float dt = 0.f;
 
     void processEvents();
     void update();
     void render();
-    void resolveScreenBounce(Body &body);
+
 public:
     Application();
     ~Application() = default;

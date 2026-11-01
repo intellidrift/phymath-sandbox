@@ -14,7 +14,9 @@ Body::Body(const Vector2f &position, const Vector2f &velocity, const float mass)
 
     boxShape.setPosition(position);
     boxShape.setSize({100, 100});
-    boxShape.setFillColor(Color(0x886176));
+    boxShape.setFillColor(Color(255, 0, 0));
+    boxShape.setOutlineColor(Color(0, 0, 0));
+    boxShape.setOutlineThickness(5);
 }
 
 void Body::integrate(const float dt)

@@ -18,6 +18,8 @@ set(PHYMATH_APP_SOURCES
         src/Application.h
         src/Body.cpp
         src/Body.h
+        src/World.cpp
+        src/World.h
 )
 
 add_executable(phymath_sandbox

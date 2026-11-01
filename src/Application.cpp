@@ -8,8 +8,8 @@ Application::Application()
     , screenWidth(mode.size.x)
     , screenHeight(mode.size.y)
 {
-    const Body box({2500, 1440}, {1000, 300}, 50); // temp to some
-    bodies.push_back(box);                         // temp to some
+    const Body box({2500, 1440}, {1000, 300}, 50);
+    world.addBody(box);
 }
 
 void Application::run()
@@ -17,8 +17,8 @@ void Application::run()
     while (window.isOpen()) {
         tick();
         processEvents();
-        update(); // temp to sim
-        render(); // temp to sim
+        update();
+        render();
     }
 }
 
@@ -33,23 +33,20 @@ void Application::processEvents()
                 window.close();
             }
         }
+
+        world.handleEvent(event);
     }
 }
 
 void Application::update()
 {
-    for (auto &box : bodies) {
-        box.update(dt);
-        resolveScreenBounce(box);
-    }
+    world.step(dt);
 }
 
 void Application::render()
 {
     window.clear(Color(50, 50, 50));
-    for (const auto &box : bodies) {
-        window.draw(box);
-    }
+    world.render(window);
     window.display();
 }
 
@@ -58,27 +55,5 @@ void Application::tick()
     dt = clock.restart().asSeconds();
     if (dt > 0.1f) {
         dt = 0.1f;
-    }
-}
-
-void Application::resolveScreenBounce(Body &body)
-{
-    constexpr float correction = 5;
-
-    if (body.position().y > screenHeight - body.box().getSize().y) {
-        body.setVelocity(Vector2f(body.velocity().x, -body.velocity().y));
-        body.setPosition({body.position().x, body.position().y - correction});
-
-    } else if (body.position().x > screenWidth - body.box().getSize().x) {
-        body.setVelocity(Vector2f(-body.velocity().x, body.velocity().y));
-        body.setPosition({body.position().x - correction, body.position().y});
-
-    } else if (body.position().y < 0) {
-        body.setVelocity(Vector2f(body.velocity().x, -body.velocity().y));
-        body.setPosition({body.position().x, body.position().y + correction});
-
-    } else if (body.position().x < 0) {
-        body.setVelocity(Vector2f(-body.velocity().x, body.velocity().y));
-        body.setPosition({body.position().x + correction, body.position().y});
     }
 }

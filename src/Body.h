@@ -31,11 +31,11 @@ public:
     void draw(RenderWindow &window) const;
 
     Vector2f position() { return pos; }
-    void setPosition(const Vector2f &value) { this->pos = value; }
     Vector2f velocity() { return vel; }
-    void setVelocity(const Vector2f &value) { this->vel = value; }
     RectangleShape box() { return boxShape; }
     void setBox(const RectangleShape &value) { this->boxShape = value; }
+    void setPosition(const Vector2f &value) { this->pos = value; }
+    void setVelocity(const Vector2f &value) { this->vel = value; }
 
 protected:
     void draw(RenderTarget &target, RenderStates states) const override;
