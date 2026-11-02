@@ -7,10 +7,13 @@ Application::Application()
     , window(mode, "Phymath-sandbox")
     , screenWidth(mode.size.x)
     , screenHeight(mode.size.y)
+    , world(Vector2u(screenWidth, screenHeight))
 {
     const Body box({2500, 1440}, {1000, 300}, 50);
-    world.addBody(box);
+    world.addBody(std::move(make_unique<Body>(box)));
 }
+
+Application::~Application() {}
 
 void Application::run()
 {

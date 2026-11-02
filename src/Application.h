@@ -8,6 +8,7 @@
 #include <SFML/Window.hpp>
 
 using namespace std;
+using namespace sf;
 
 class Application final
 {
@@ -18,7 +19,7 @@ private:
 
     int screenWidth;
     int screenHeight;
-    World world; // temp
+    World world;
     float dt = 0.f;
 
     void processEvents();
@@ -27,11 +28,9 @@ private:
 
 public:
     Application();
-    ~Application() = default;
+    ~Application();
     void run();
     void tick();
 };
-
-using namespace sf;
 
 #endif //PHYMATH_SANDBOX_APPLICATION_H

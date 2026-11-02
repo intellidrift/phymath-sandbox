@@ -9,14 +9,16 @@ using namespace std;
 
 class World
 {
+    Vector2u bounds;
+
 private:
-    vector<Body> bodies;
+    vector<unique_ptr<Body>> bodies;
 
 public:
-    World();
-    virtual ~World() = default;
-    void addBody(const Body &body);
-    // void resolveScreenBounce(Body &body);
+    explicit World(const Vector2u &bounds);
+    virtual ~World();
+    void addBody(unique_ptr<Body> &&body);
+    void resolveScreenBounce(Body &body);
 
     virtual void handleEvent(const optional<Event> &event);
     virtual void step(float dt);
