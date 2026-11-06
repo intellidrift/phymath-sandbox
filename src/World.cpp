@@ -8,14 +8,12 @@ World::World(const Vector2u &bounds)
     : bounds(bounds)
 {}
 
-World::~World() {}
-
 void World::addBody(unique_ptr<Body> &&body)
 {
     bodies.push_back(std::move(body));
 }
 
-void World::resolveScreenBounce(Body &body)
+void World::resolveWalls(Body &body)
 {
     constexpr float correction = 5;
 
@@ -48,7 +46,7 @@ void World::step(const float dt)
 {
     for (const auto &body : bodies) {
         body->update(dt);
-        resolveScreenBounce(*body);
+        resolveWalls(*body);
     }
 }
 

@@ -13,22 +13,24 @@ using namespace sf;
 class Application final
 {
 private:
+    const String title = "Phymath-sandbox";
+    const int screenWidth = 3550;
+    const int screenHeight = 2440;
+
     VideoMode mode;
     RenderWindow window;
     Clock clock;
 
-    int screenWidth;
-    int screenHeight;
-    World world;
     float dt = 0.f;
 
+    World world;
     void processEvents();
     void update();
     void render();
 
 public:
     Application();
-    ~Application();
+    ~Application() = default;
     void run();
     void tick();
 };

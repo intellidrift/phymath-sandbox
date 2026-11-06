@@ -3,17 +3,18 @@
 #include <iostream>
 
 Application::Application()
-    : mode({3550, 2440})
-    , window(mode, "Phymath-sandbox")
-    , screenWidth(mode.size.x)
-    , screenHeight(mode.size.y)
+    : mode(Vector2u(screenWidth, screenHeight))
+    , window(mode, title, Style::Close)
     , world(Vector2u(screenWidth, screenHeight))
 {
+    window.setFramerateLimit(144);
+    window.setVerticalSyncEnabled(true);
+
     const Body box({2500, 1440}, {1000, 300}, 50);
     world.addBody(std::move(make_unique<Body>(box)));
+    const Body box1({1000, 700}, {300, 1000}, 50);
+    world.addBody(std::move(make_unique<Body>(box1)));
 }
-
-Application::~Application() {}
 
 void Application::run()
 {

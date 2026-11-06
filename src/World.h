@@ -16,9 +16,9 @@ private:
 
 public:
     explicit World(const Vector2u &bounds);
-    virtual ~World();
+    virtual ~World() = default;
     void addBody(unique_ptr<Body> &&body);
-    void resolveScreenBounce(Body &body);
+    void resolveWalls(Body &body);
 
     virtual void handleEvent(const optional<Event> &event);
     virtual void step(float dt);
